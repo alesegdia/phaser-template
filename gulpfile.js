@@ -1,23 +1,21 @@
 var gulp = require('gulp'),
-	gulp_concat = require('gulp-concat'),
-	gulp_rename = require('gulp-rename'),
-	gulp_uglify = require('gulp-uglify');
+	concat = require('gulp-concat'),
+	rename = require('gulp-rename'),
+	uglify = require('gulp-uglify');
 
 var files = [
 	'./src/game/game.js',
 ];
 
-gulp.task('js-minified', function () {
+var DEST = 'dist';
+
+gulp.task('js-build', function () {
 	return gulp.src(files)
-		.pipe(gulp_concat('game.js'))
-		.pipe(gulp_uglify()),
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest(DEST))
+		.pipe(concat('game.js'))
+		.pipe(uglify())
+		.pipe(rename({extname: '.min.js'}))
+		.pipe(gulp.dest(DEST));
 });
 
-gulp.task('js-single', function () {
-	return gulp.src(files)
-		.pipe(gulp_concat('game.min.js'))
-		.pipe(gulp.dest('dist'));
-});
-
-gulp.task('default', ['js-minified', 'js-single'], function(){});
+gulp.task('default', ['js-build'], function(){});
